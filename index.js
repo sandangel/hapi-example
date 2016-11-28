@@ -36,9 +36,19 @@ server.bind({
 server.register([{
     register: require('good'),
     options,
-  }, require('dindin-api'),
-  require('inert'),
-  require('vision')
+  },
+  require('dindin-api'),
+  require('inert'), // serves static content
+  require('vision'), // rendering view
+  {
+    register: require('yar'),
+    options: {
+      cookieOptions: {
+        password: 'password',
+        isSecure: false
+      }
+    }
+  }
 ], (err) => {
 
   if (err) {
@@ -69,6 +79,11 @@ server.register([{
     console.log('Server running at:', server.info.uri);
   });
 });
+
+// server.auth.strategy('session', 'cookie', 'try', {
+//   password: 'password-that-is-at-least-32-chars',
+//   isSecure: false
+// });
 
 // const validateFunc = function(token, callback) {
 //

@@ -8,7 +8,12 @@
   <body>
     <header>
       <a href="/" id="logo"><img alt="DinDin" src="/images/logo.png"></a>
-      <a href="/login" class="header-button">Login</a>
+      {{#if user}}
+        <a class="header-button" href="/logout">Logout</a>
+        <a class="header-button" href="/create">Create +</a>
+      {{else}}
+        <a href="/login" class="header-button">Login</a>
+      {{/if}}      
     </header>
 
     {{{content}}}
