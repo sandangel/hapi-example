@@ -4,29 +4,29 @@ const Wreck = require('wreck');
 
 exports.login = function(request, reply) {
 
-  var self = this;
+  // var self = this;
 
-  var apiUrl = this.apiBaseUrl + '/login';
+  const apiUrl = this.apiBaseUrl + '/login';
 
   Wreck.post(apiUrl, {
     payload: JSON.stringify(request.payload),
     json: true
-  }, function(err, res, payload) {
+  }, (err, res, payload) => {
 
     if (err) {
       throw err;
     }
 
     if (res.statusCode !== 200) {
-      reply.redirect(self.webBaseUrl + '/login');
+      reply.redirect(this.webBaseUrl + '/login');
     } else {
-      request.yar.set('user', {
-        loggedIn: true,
-        token: payload.token
-      });
-      reply.redirect(self.webBaseUrl);
+      // request.yar.set('user', {
     }
 
+    request.cookieAuth.set({
+      token: payload.token
+    });
+    reply.redirect(this.webBaseUrl);
   });
 };
 
@@ -35,7 +35,8 @@ exports.createRecipe = function(request, reply) {
   var self = this;
 
   const apiUrl = this.apiBaseUrl + '/recipes';
-  const token = request.yar.get('user').token;
+  // const token = request.yar.get('user').token;
+  const token = request.auth.credentials.token;
 
   Wreck.post(apiUrl, {
     payload: JSON.stringify(request.payload),
@@ -53,6 +54,7 @@ exports.createRecipe = function(request, reply) {
 
 exports.logout = function(request, reply) {
 
-  request.yar.clear('user');
+  // request.yar.clear('user');
+  request.cookieAuth.clear();
   reply.redirect(this.webBaseUrl);
 };

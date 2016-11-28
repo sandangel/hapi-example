@@ -40,19 +40,27 @@ server.register([{
   require('dindin-api'),
   require('inert'),
   require('vision'), {
-    register: require('yar'),
-    options: {
-      cookieOptions: {
-        password: 'the-password-must-be-at-least-32-characters-long',
-        isSecure: false
-      }
-    }
+    // register: require('yar'),
+    register: require('hapi-auth-cookie'),
+    // options: {
+    //   cookieOptions: {
+    //     password: 'the-password-must-be-at-least-32-characters-long',
+    //     isSecure: false
+    //   }
+    // }
   }
 ], function(err) {
 
   if (err) {
     throw err;
   }
+
+  // hapi-auth-cookie
+
+  server.auth.strategy('session', 'cookie', 'try', {
+    password: 'the-password-must-be-at-least-32-characters-long',
+    isSecure: false
+  })
 
   server.views({
     engines: {
